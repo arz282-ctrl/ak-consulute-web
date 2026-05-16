@@ -84,7 +84,7 @@ export default function Hero() {
         >
           <div className="relative">
             <span className="absolute inset-0 rounded-full bg-primary/40 animate-pulse-ring" aria-hidden />
-            <GradientButton href="#contact" size="lg" withArrow>
+            <GradientButton href="/book" size="lg" withArrow>
               Book A Consultation
             </GradientButton>
           </div>

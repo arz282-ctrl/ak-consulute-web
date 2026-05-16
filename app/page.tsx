@@ -26,7 +26,7 @@ export default function HomePage() {
         subtitle="Personalized, fixed-fee counsel across Immigration, Family Law, Conveyancing and more — treating every case, however big or small, like it matters. Multilingual support in English & Bengali."
         callToAction={{
           text: 'BOOK A CONSULTATION',
-          href: '#contact',
+          href: '/book',
         }}
         backgroundImage="/images/ak-avatar.png"
         contactInfo={{

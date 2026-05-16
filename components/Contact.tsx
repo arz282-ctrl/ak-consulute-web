@@ -40,7 +40,7 @@ const contactItems: ContactItem[] = [
     icon: Phone,
     label: 'Call',
     lines: [
-      { value: '+44 7459 641859', href: 'tel:+447459641859', subIcon: Phone },
+      { value: '+44 7459 641859', href: 'tel:+447459641859' },
     ],
   },
   {
@@ -82,6 +82,7 @@ export default function Contact() {
     const email = (data.get('email') as string)?.trim() ?? '';
     const phone = (data.get('phone') as string)?.trim() ?? '';
     const service = (data.get('service') as string)?.trim() ?? '';
+    const preferredDate = (data.get('preferredDate') as string)?.trim() ?? '';
     const message = (data.get('message') as string)?.trim() ?? '';
 
     const subject = encodeURIComponent(`New enquiry from ${name || 'Website visitor'}`);
@@ -91,6 +92,7 @@ export default function Contact() {
         `Email: ${email || '-'}`,
         `Phone: ${phone || '-'}`,
         `Service: ${service || '-'}`,
+        `Preferred date: ${preferredDate || '-'}`,
         '',
         'Message:',
         message || '-',
@@ -244,6 +246,7 @@ export default function Contact() {
               <Field label="Email" name="email" type="email" placeholder="jane@example.com" required />
               <Field label="Phone" name="phone" type="tel" placeholder="+44 ..." />
               <SelectField label="Service" name="service" options={serviceOptions} />
+              <Field label="Preferred date" name="preferredDate" type="date" />
             </div>
 
             <div className="mt-4">

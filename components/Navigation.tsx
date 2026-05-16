@@ -39,17 +39,21 @@ export default function Navigation() {
               className="flex items-center gap-2 md:gap-3 shrink-0 md:self-end md:translate-y-[15.5px]"
               aria-label="Anwar Khan — Legal Consultant"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/images/logo-a.png"
-                alt=""
-                className="h-[46px] md:h-[86px] w-auto block -ml-3 md:ml-0 md:translate-y-[5.8px] md:translate-x-[16px]"
-              />
-              <span className="flex flex-col leading-none md:ml-[-38px]">
-                <span className="font-display font-extrabold text-[11px] tracking-tight text-secondary">
+              {/* Mobile: crop the source PNG's transparent padding by wrapping in a tight box and scaling the visible A up.
+                  Desktop: render the image at native ratio (existing pixel-pushed lockup). */}
+              <span className="relative block w-[53.1px] h-[53.1px] overflow-hidden translate-y-[6px] translate-x-[7px] md:translate-x-0 md:translate-y-0 md:w-auto md:h-[86px] md:overflow-visible">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/logo-a.png"
+                  alt=""
+                  className="absolute inset-0 w-full h-full object-contain scale-[1.85] md:static md:scale-100 md:w-auto md:translate-y-[5.8px] md:translate-x-[16px]"
+                />
+              </span>
+              <span className="flex flex-col leading-none ml-[-8.5px] md:ml-[-38px]">
+                <span className="font-display font-extrabold text-[10.6px] md:text-[11px] tracking-tight text-secondary">
                   Anwar Khan
                 </span>
-                <span className="mt-0.5 md:mt-1 font-sans font-medium text-[9px] uppercase tracking-[0.32em] text-secondary/55">
+                <span className="mt-0.5 md:mt-1 font-sans font-medium text-[8.6px] md:text-[9px] uppercase tracking-[0.32em] text-secondary/55">
                   Legal Consultant
                 </span>
               </span>
@@ -68,14 +72,14 @@ export default function Navigation() {
                 <Phone className="w-4 h-4" />
                 +44 7459 641859
               </a>
-              <GradientButton href="#contact" size="md" withArrow>
+              <GradientButton href="/book" size="md" withArrow>
                 Book A Consultation
               </GradientButton>
             </div>
 
             <button
               onClick={() => setOpen((v) => !v)}
-              className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-full bg-secondary text-white"
+              className="md:hidden inline-flex items-center justify-center w-[39px] h-[39px] rounded-full bg-secondary text-white -translate-y-[1.6px]"
               aria-label="Menu"
             >
               {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -108,7 +112,7 @@ export default function Navigation() {
                 </motion.a>
               ))}
               <div className="pt-3">
-                <GradientButton href="#contact" size="md" className="w-full justify-center">
+                <GradientButton href="/book" size="md" className="w-full justify-center">
                   Book A Consultation
                 </GradientButton>
               </div>

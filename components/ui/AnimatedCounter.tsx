@@ -19,7 +19,7 @@ export default function AnimatedCounter({
   className = '',
 }: CounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-80px' });
+  const inView = useInView(ref, { once: true, amount: 0.2 });
   const count = useMotionValue(0);
   const rounded = useTransform(count, (latest) => Math.floor(latest).toLocaleString());
 

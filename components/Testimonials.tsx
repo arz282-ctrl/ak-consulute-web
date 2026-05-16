@@ -15,6 +15,7 @@ const testimonials: Testimonial[] = [
     image: 'https://randomuser.me/api/portraits/women/65.jpg',
     name: 'Rashida Begum',
     role: 'Immigration Client',
+    rating: 4.9,
   },
   {
     text: "Walked us through every page of the conveyancing process. The transparency made what felt overwhelming feel completely manageable. Highly recommend to any first-time buyer.",
@@ -22,6 +23,7 @@ const testimonials: Testimonial[] = [
     image: 'https://randomuser.me/api/portraits/men/32.jpg',
     name: "James O'Connell",
     role: 'First-time Homebuyer',
+    rating: 4.7,
   },
   {
     text: 'Being able to discuss sensitive matters in Bengali made all the difference. Anwar handled our case with respect, discretion, and remarkable care. Forever grateful.',
@@ -29,6 +31,7 @@ const testimonials: Testimonial[] = [
     image: 'https://randomuser.me/api/portraits/women/44.jpg',
     name: 'Tahmina Akter',
     role: 'Family Law Matter',
+    rating: 5.0,
   },
   {
     text: 'A landlord-tenant dispute that dragged on for months was resolved in weeks once Anwar got involved. Calm, decisive, and effective. Worth every penny.',
@@ -36,6 +39,7 @@ const testimonials: Testimonial[] = [
     image: 'https://randomuser.me/api/portraits/men/52.jpg',
     name: 'David Whitmore',
     role: 'Lease Dispute',
+    rating: 4.6,
   },
   {
     text: 'He drafted our family will with such care, explaining every clause. We finally feel at peace knowing our affairs are properly arranged.',
@@ -43,6 +47,7 @@ const testimonials: Testimonial[] = [
     image: 'https://randomuser.me/api/portraits/women/72.jpg',
     name: 'Nasreen Choudhury',
     role: 'Wills & Probate',
+    rating: 4.8,
   },
 ];
 
