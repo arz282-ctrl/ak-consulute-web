@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { staggerContainer, fadeUp } from '@/lib/animations';
 import VerticalTabs from '@/components/ui/vertical-tabs';
+import RuixenBentoCards from '@/components/ui/ruixen-bento-cards';
 
 const services = [
   {
@@ -91,6 +92,11 @@ export default function Services() {
         {/* Animated visuals carousel — desktop only */}
         <div className="hidden lg:block mt-12 lg:mt-16">
           <VerticalTabs />
+        </div>
+
+        {/* Updated bento cards + Civil Legal Services visual — desktop only */}
+        <div className="hidden lg:block mt-12 lg:mt-14">
+          <RuixenBentoCards />
         </div>
 
         {/* Grid */}
