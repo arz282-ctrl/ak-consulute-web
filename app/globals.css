@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Install:
+   npm install
+   npm run dev
+   ============================================================ */
+
+:root {
+  --ink: #0A1628;
+  --ink-2: #1E3358;
+  --flame: #F57C20;
+  --flame-2: #FA8C2A;
+  --paper: #FFFFFF;
+  --cream: #FFF7EE;
+}
+
+* { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+}
+
+html, body {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+::selection {
+  background: var(--flame);
+  color: #fff;
+}
+
+/* Custom scrollbar — premium feel */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #F4F1EC; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #F57C20, #D6691A);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover { background: #F57C20; }
+
+/* Utility — backdrop glass */
+.glass {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: saturate(180%) blur(18px);
+  -webkit-backdrop-filter: saturate(180%) blur(18px);
+  border: 1px solid rgba(10, 22, 40, 0.06);
+}
+
+.glass-dark {
+  background: rgba(10, 22, 40, 0.55);
+  backdrop-filter: saturate(180%) blur(18px);
+  -webkit-backdrop-filter: saturate(180%) blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Subtle grid pattern overlay */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(245,124,32,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245,124,32,0.06) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/* Section accent line — the "A swoosh" motif */
+.swoosh-divider {
+  position: relative;
+}
+.swoosh-divider::after {
+  content: '';
+  display: block;
+  width: 64px;
+  height: 4px;
+  margin-top: 16px;
+  background: linear-gradient(90deg, #F57C20 0%, #FA8C2A 60%, transparent 100%);
+  border-radius: 4px;
+}
+
+/* GPU acceleration helper */
+.gpu { transform: translateZ(0); will-change: transform, opacity; }
+
+/* Ambient orb */
+.orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* Conic gradient ring (used around avatar) */
+.ring-conic {
+  background: conic-gradient(from 210deg, #F57C20, #FFA84E, #F57C20, #D6691A, #F57C20);
+}
+
+/* Shimmer text */
+.text-shimmer {
+  background: linear-gradient(90deg, #F57C20 0%, #FFA84E 25%, #F57C20 50%, #FFA84E 75%, #F57C20 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Smooth focus rings */
+:focus-visible {
+  outline: 2px solid #F57C20;
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Hide arrows on number inputs */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }

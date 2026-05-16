@@ -1,0 +1,17 @@
+node_modules/
+.claude/
+.next/
+out/
+.env*.local
+.DS_Store
+*.log
+.vercel
+next-env.d.ts
+tsconfig.tsbuildinfo
+
+# Source/raw design assets at repo root (already exported into public/images/)
+/*.png
+/*.jpg
+/*.jpeg
+!/public/**/*.png
+!/public/**/*.jpg
