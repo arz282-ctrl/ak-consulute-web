@@ -16,7 +16,7 @@ export default function HomePage() {
         slogan="Legal Consultant · In Practice Since 2004"
         title={
           <>
-            <span className="whitespace-nowrap">
+            <span className="md:whitespace-nowrap">
               Experienced <span className="text-primary">&amp;</span> Authorized
             </span>
             <br />

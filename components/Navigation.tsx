@@ -36,20 +36,20 @@ export default function Navigation() {
           <div className="relative flex items-center justify-between bg-transparent py-2">
             <a
               href="#top"
-              className="flex items-center gap-3 shrink-0 self-end translate-y-[15.5px]"
+              className="flex items-center gap-2 md:gap-3 shrink-0 md:self-end md:translate-y-[15.5px]"
               aria-label="Anwar Khan — Legal Consultant"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/images/logo-a.png"
                 alt=""
-                className="h-[86px] w-auto block translate-y-[5.8px] translate-x-[16px]"
+                className="h-[46px] md:h-[86px] w-auto block -ml-3 md:ml-0 md:translate-y-[5.8px] md:translate-x-[16px]"
               />
-              <span className="flex flex-col leading-none ml-[-38px]">
+              <span className="flex flex-col leading-none md:ml-[-38px]">
                 <span className="font-display font-extrabold text-[11px] tracking-tight text-secondary">
                   Anwar Khan
                 </span>
-                <span className="mt-1 font-sans font-medium text-[9px] uppercase tracking-[0.32em] text-secondary/55">
+                <span className="mt-0.5 md:mt-1 font-sans font-medium text-[9px] uppercase tracking-[0.32em] text-secondary/55">
                   Legal Consultant
                 </span>
               </span>

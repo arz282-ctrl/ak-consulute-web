@@ -85,7 +85,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
         {...props}
       >
         {/* Left Side: Content — main block vertically centered, contact strip pinned to bottom */}
-        <div className="flex w-full flex-col p-8 md:w-1/2 md:p-12 lg:w-3/5 lg:p-16 pt-28 md:pt-36 md:min-h-screen">
+        <div className="flex w-full flex-col px-5 pt-24 pb-10 sm:p-8 md:w-1/2 md:p-12 lg:w-3/5 lg:p-16 md:pt-36 md:min-h-screen">
           <div className="flex-1 flex flex-col justify-center">
             {/* Optional logo lockup (omit when nav already shows brand identity) */}
             {logo && (
@@ -113,7 +113,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                 </motion.div>
               )}
               <motion.h1
-                className="mt-1 font-display text-[36px] font-extrabold leading-[1] tracking-tight text-foreground md:text-[42px] lg:text-5xl xl:text-[56px]"
+                className="mt-1 font-display text-[30px] sm:text-[36px] font-extrabold leading-[1.05] tracking-tight text-foreground md:text-[42px] lg:text-5xl xl:text-[56px]"
                 variants={itemVariants}
               >
                 {title}
@@ -227,14 +227,14 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
           </div>
 
           <motion.div
-            className="relative w-full min-h-[360px] bg-cover md:min-h-[100vh]"
+            className="relative w-full h-[420px] sm:h-[480px] bg-cover md:h-auto md:min-h-[100vh]"
             style={{
               backgroundImage: `url(${backgroundImage})`,
-              backgroundPosition: 'center 25%',
+              backgroundPosition: 'center 22%',
               backgroundSize: 'cover',
             }}
             initial={{ clipPath: 'polygon(100% 0, 100% 0, 100% 100%, 100% 100%)' }}
-            animate={{ clipPath: 'polygon(25% 0, 100% 0, 100% 100%, 0% 100%)' }}
+            animate={{ clipPath: 'polygon(0% 0, 100% 0, 100% 100%, 0% 100%)' }}
             transition={{ duration: 1.2, ease: 'circOut' }}
           />
 
