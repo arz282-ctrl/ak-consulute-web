@@ -76,7 +76,8 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
       <motion.section
         ref={ref}
         className={cn(
-          'relative flex w-full flex-col overflow-hidden bg-background text-foreground md:flex-row',
+          // Always side-by-side, always exactly one viewport tall
+          'relative flex w-full overflow-hidden bg-background text-foreground min-h-screen md:min-h-0 md:h-screen',
           className,
         )}
         initial="hidden"
@@ -85,7 +86,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
         {...props}
       >
         {/* Left Side: Content — main block vertically centered, contact strip pinned to bottom */}
-        <div className="flex w-full flex-col px-5 pt-24 pb-10 sm:p-8 md:w-1/2 md:p-12 lg:w-3/5 lg:p-16 md:pt-36 md:min-h-screen">
+        <div className="flex w-3/5 flex-col px-3 pt-20 pb-4 sm:px-5 sm:pt-24 sm:pb-6 md:w-1/2 md:p-12 lg:w-3/5 lg:p-16 md:pt-36 h-full">
           <div className="flex-1 flex flex-col justify-center">
             {/* Optional logo lockup (omit when nav already shows brand identity) */}
             {logo && (
@@ -113,7 +114,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                 </motion.div>
               )}
               <motion.h1
-                className="mt-1 font-display text-[30px] sm:text-[36px] font-extrabold leading-[1.05] tracking-tight text-foreground md:text-[42px] lg:text-5xl xl:text-[56px]"
+                className="mt-1 font-display text-[20px] sm:text-[28px] font-extrabold leading-[1.05] tracking-tight text-foreground md:text-[42px] lg:text-5xl xl:text-[56px]"
                 variants={itemVariants}
               >
                 {title}
@@ -216,7 +217,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
         </div>
 
         {/* Right Side: Portrait with flame halo + clip-path slide */}
-        <div className="relative w-full md:w-1/2 lg:w-2/5">
+        <div className="relative w-2/5 md:w-1/2 lg:w-2/5 h-full">
           {/* Soft flame halo glow behind the portrait */}
           <div
             aria-hidden
@@ -226,18 +227,52 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
             <div className="absolute right-[-10%] top-[20%] w-[280px] h-[280px] rounded-full bg-primary/30 blur-[90px]" />
           </div>
 
+          {/* Desktop (md+): full background-image filling the angled clip-path wedge */}
           <motion.div
-            className="relative w-full h-[420px] sm:h-[480px] bg-cover md:h-auto md:min-h-[100vh]"
+            className="hidden md:block relative w-full h-full bg-cover"
             style={{
               backgroundImage: `url(${backgroundImage})`,
               backgroundPosition: 'center 22%',
               backgroundSize: 'cover',
             }}
             initial={{ clipPath: 'polygon(100% 0, 100% 0, 100% 100%, 100% 100%)' }}
-            animate={{ clipPath: 'polygon(0% 0, 100% 0, 100% 100%, 0% 100%)' }}
+            animate={{ clipPath: 'polygon(25% 0, 100% 0, 100% 100%, 0% 100%)' }}
             transition={{ duration: 1.2, ease: 'circOut' }}
           />
 
+          {/* Mobile: angled wedge as background-only (clipped) */}
+          <motion.div
+            aria-hidden
+            className="md:hidden absolute inset-0 bg-gradient-to-br from-primary/15 via-primary/[0.06] to-primary/25"
+            initial={{ clipPath: 'polygon(100% 0, 100% 0, 100% 100%, 100% 100%)' }}
+            animate={{ clipPath: 'polygon(25% 0, 100% 0, 100% 100%, 0% 100%)' }}
+            transition={{ duration: 1.2, ease: 'circOut' }}
+          />
+
+          {/* Mobile: circular AK avatar — rendered OUTSIDE the clipped wedge so it's never cropped */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.7 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            className="md:hidden absolute inset-0 z-10 flex items-start justify-center pt-20 pr-2"
+          >
+            <div className="relative translate-y-[40px] -translate-x-[4px]">
+              {/* Conic flame ring */}
+              <div
+                aria-hidden
+                className="absolute -inset-1.5 rounded-full ring-conic"
+              />
+              {/* Circular avatar */}
+              <div className="relative w-[152px] h-[152px] sm:w-[192px] sm:h-[192px] rounded-full overflow-hidden border-[3px] border-white shadow-flame bg-secondary">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={backgroundImage}
+                  alt="Anwar Khan"
+                  className="w-full h-full object-cover object-[center_22%]"
+                />
+              </div>
+            </div>
+          </motion.div>
         </div>
       </motion.section>
     );

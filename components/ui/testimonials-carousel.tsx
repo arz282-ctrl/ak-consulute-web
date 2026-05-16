@@ -22,24 +22,38 @@ interface TestimonialsCarouselProps {
 
 function RatingBadge({ rating }: { rating: number }) {
   const clamped = Math.max(0, Math.min(5, rating));
-  // Fill percentage for the star overlay (e.g. 4.7 → 94%)
-  const fillPct = (clamped / 5) * 100;
+  // Star fill ratio (0.92 for 4.6, 0.98 for 4.9, 1.0 for 5.0)
+  const ratio = clamped / 5;
+  const gradId = React.useId();
   return (
-    <div className="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-full bg-primary/10 ring-2 ring-primary/30">
-      <div className="relative flex gap-[1px] text-[9px] leading-none" aria-label={`${clamped.toFixed(1)} out of 5 stars`}>
-        {/* Empty stars (background) */}
-        <div className="flex gap-[1px] text-secondary/20">
-          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-        </div>
-        {/* Filled stars clipped to the rating percentage */}
-        <div
-          className="absolute inset-0 flex gap-[1px] text-primary overflow-hidden"
-          style={{ width: `${fillPct}%` }}
-        >
-          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-        </div>
-      </div>
-      <div className="mt-0.5 text-[9px] font-extrabold text-secondary leading-none tabular-nums">
+    <div
+      className="flex shrink-0 items-center gap-1.5"
+      aria-label={`${clamped.toFixed(1)} out of 5 stars`}
+    >
+      {/* Single SVG star with proportional flame fill */}
+      <svg
+        viewBox="0 0 24 24"
+        width="28"
+        height="28"
+        className="shrink-0 block"
+        aria-hidden
+      >
+        <defs>
+          <linearGradient id={gradId} x1="0" y1="0" x2="1" y2="0">
+            <stop offset={`${ratio * 100}%`} stopColor="#F57C20" />
+            <stop offset={`${ratio * 100}%`} stopColor="#0A1628" stopOpacity="0.18" />
+          </linearGradient>
+        </defs>
+        <path
+          d="M12 2.5l2.95 6.1 6.55.95-4.75 4.65 1.12 6.5L12 17.6l-5.87 3.1 1.12-6.5L2.5 9.55l6.55-.95L12 2.5z"
+          fill={`url(#${gradId})`}
+          stroke="#F57C20"
+          strokeWidth="0.5"
+          strokeLinejoin="round"
+        />
+      </svg>
+      {/* Numeric rating */}
+      <div className="font-display text-[15px] font-extrabold leading-none text-secondary tabular-nums">
         {clamped.toFixed(1)}
       </div>
     </div>

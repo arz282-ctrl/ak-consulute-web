@@ -114,32 +114,31 @@ export default function BookingPage() {
 
   const handleSubmit = () => {
     const lines = [
-      'NEW CONSULTATION REQUEST',
-      '========================',
+      '*NEW CONSULTATION REQUEST*',
       '',
-      `Service: ${SERVICES.find((s) => s.id === form.service)?.label ?? '-'}`,
+      `*Service:* ${SERVICES.find((s) => s.id === form.service)?.label ?? '-'}`,
       '',
-      `Name: ${form.fullName}`,
-      `Email: ${form.email}`,
-      `Phone: ${form.phone}`,
-      `Preferred language: ${form.language}`,
-      `Preferred contact: ${CONTACT_METHODS.find((c) => c.id === form.contactMethod)?.label ?? '-'}`,
-      `Preferred date: ${form.preferredDate || '-'}`,
-      `Preferred slot: ${TIME_SLOTS.find((t) => t.id === form.preferredSlot)?.label ?? '-'}`,
+      `*Name:* ${form.fullName}`,
+      `*Email:* ${form.email}`,
+      `*Phone:* ${form.phone}`,
+      `*Language:* ${form.language}`,
+      `*Contact via:* ${CONTACT_METHODS.find((c) => c.id === form.contactMethod)?.label ?? '-'}`,
+      `*Preferred date:* ${form.preferredDate || '-'}`,
+      `*Preferred slot:* ${TIME_SLOTS.find((t) => t.id === form.preferredSlot)?.label ?? '-'}`,
       '',
-      `Urgency: ${URGENCY.find((u) => u.id === form.urgency)?.label ?? '-'}`,
-      `Prior legal action: ${form.priorAction || '-'}`,
+      `*Urgency:* ${URGENCY.find((u) => u.id === form.urgency)?.label ?? '-'}`,
+      `*Prior legal action:* ${form.priorAction || '-'}`,
       '',
-      'Case summary:',
+      '*Case summary:*',
       form.caseSummary,
       '',
-      `Attachments mentioned (${form.documents.length}):`,
+      `*Attachments mentioned (${form.documents.length}):*`,
       ...form.documents.map((d, i) => `  ${i + 1}. ${d.label || 'Untitled'} — ${d.file.name} (${(d.file.size / 1024).toFixed(0)} KB)`),
     ].join('\n');
 
-    const subject = encodeURIComponent(`New consultation: ${form.fullName} — ${SERVICES.find((s) => s.id === form.service)?.label ?? ''}`);
-    const body = encodeURIComponent(lines);
-    window.location.href = `mailto:info@akconsultant.uk?subject=${subject}&body=${body}`;
+    const text = encodeURIComponent(lines);
+    // Open WhatsApp chat with Anwar's number (no + or spaces in wa.me URL)
+    window.location.href = `https://wa.me/447459641859?text=${text}`;
     setSubmitted(true);
   };
 
@@ -148,8 +147,8 @@ export default function BookingPage() {
       <main className="min-h-screen bg-gradient-to-b from-white via-primary/[0.04] to-white flex flex-col items-center justify-center p-5 sm:p-10">
         <WaitlistCard
           icon={<MailCheck className="h-8 w-8" />}
-          title="Consultation request sent."
-          description="Thanks — your details have been forwarded to Anwar Khan. Expect a reply within one business day. For urgent matters, please call directly."
+          title="Request submitted."
+          description="Thanks for booking a consultation. Please wait for your reply — Anwar Khan will be in touch within one business day. For urgent matters, please call directly."
           footerContent={
             <div className="flex flex-col items-center gap-3">
               <a

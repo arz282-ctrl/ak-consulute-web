@@ -59,7 +59,7 @@ export default function Footer() {
 
             {/* Socials */}
             <div className="mt-6 flex items-center gap-3">
-              <SocialIcon href="https://facebook.com" label="Facebook">
+              <SocialIcon href="https://www.facebook.com/share/1EEPoyRRfx/" label="Facebook">
                 <Facebook className="w-4 h-4" />
               </SocialIcon>
               <SocialIcon href="https://wa.me/447459641859" label="WhatsApp">

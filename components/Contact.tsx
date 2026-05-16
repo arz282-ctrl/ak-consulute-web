@@ -203,8 +203,8 @@ export default function Contact() {
                 >
                   <WaitlistCard
                     icon={<MailCheck className="h-8 w-8" />}
-                    title="Enquiry received."
-                    description="Thanks for reaching out. Your details have been sent and Anwar will reply within one business day. For urgent matters please call directly."
+                    title="Inquiry submitted."
+                    description="Thanks for reaching out. Anwar Khan will reply within one business day. For urgent matters, please call directly."
                     footerContent={
                       <div className="flex flex-col sm:flex-row items-center gap-3">
                         <Button
