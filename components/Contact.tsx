@@ -246,7 +246,7 @@ export default function Contact() {
               <Field label="Email" name="email" type="email" placeholder="jane@example.com" required />
               <Field label="Phone" name="phone" type="tel" placeholder="+44 ..." />
               <SelectField label="Service" name="service" options={serviceOptions} />
-              <Field label="Preferred date" name="preferredDate" type="date" />
+              <Field label="Preferred Date for Callback" name="preferredDate" type="date" />
             </div>
 
             <div className="mt-4">

@@ -20,15 +20,14 @@ export default function Navigation() {
   return (
     <>
       {/*
-        Nav is absolutely positioned at the top of <main>, NOT fixed.
-        Result: it sits over the hero on initial load, then scrolls away
-        naturally with the hero as the user moves down the page.
+        Nav is fixed at the top of the viewport.
+        Result: it stays visible at the top regardless of scroll position.
       */}
       <motion.header
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute top-0 inset-x-0 z-50 py-5"
+        className="fixed top-0 inset-x-0 z-50 py-5"
       >
         {/* Full-width bar: logo hugs the left edge, links sit centered over the text column,
             phone + CTA hug the right edge so they land above the portrait. */}
