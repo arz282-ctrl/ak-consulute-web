@@ -27,17 +27,16 @@ export default function Navigation() {
   return (
     <>
       {/*
-        Nav is fixed at the top of the viewport.
-        Result: it stays visible at the top regardless of scroll position.
+        Nav scrolls with the page and has glass morphism effect.
+        On mobile: moves with page scroll, glass effect appears after scrolling.
+        On desktop: moves with page scroll, glass effect always visible.
       */}
       <motion.header
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        className={`fixed top-0 inset-x-0 z-50 py-5 transition-all duration-300 ${
-          scrolled
-            ? 'bg-white/70 backdrop-blur-md shadow-sm border-b border-white/30'
-            : 'bg-transparent'
+        className={`fixed md:absolute top-0 inset-x-0 z-50 py-5 transition-all duration-300 ${
+          scrolled ? 'bg-white/70 backdrop-blur-md shadow-sm border-b border-white/30' : 'bg-transparent'
         }`}
       >
         {/* Full-width bar: logo hugs the left edge, links sit centered over the text column,
