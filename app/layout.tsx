@@ -48,7 +48,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${sora.variable} ${manrope.variable}`}>
-      <body className="font-sans bg-white text-secondary antialiased" style={{ overflowX: 'clip' }}>
+      <body className="font-sans bg-white text-secondary antialiased">
         {children}
       </body>
     </html>
