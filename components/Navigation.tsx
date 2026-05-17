@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Phone } from 'lucide-react';
 import GradientButton from './ui/GradientButton';
@@ -16,6 +16,13 @@ const links = [
 
 export default function Navigation() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   return (
     <>
@@ -27,7 +34,11 @@ export default function Navigation() {
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed top-0 inset-x-0 z-50 py-5"
+        className={`fixed top-0 inset-x-0 z-50 py-5 transition-all duration-300 ${
+          scrolled
+            ? 'bg-white/70 backdrop-blur-md shadow-sm border-b border-white/30'
+            : 'bg-transparent'
+        }`}
       >
         {/* Full-width bar: logo hugs the left edge, links sit centered over the text column,
             phone + CTA hug the right edge so they land above the portrait. */}
