@@ -10,7 +10,6 @@ import {
   Clock,
   Loader2,
   CheckCircle2,
-  Send,
   Mail,
   MailCheck,
 } from 'lucide-react';
@@ -85,21 +84,21 @@ export default function Contact() {
     const preferredDate = (data.get('preferredDate') as string)?.trim() ?? '';
     const message = (data.get('message') as string)?.trim() ?? '';
 
-    const subject = encodeURIComponent(`New enquiry from ${name || 'Website visitor'}`);
-    const body = encodeURIComponent(
-      [
-        `Name: ${name || '-'}`,
-        `Email: ${email || '-'}`,
-        `Phone: ${phone || '-'}`,
-        `Service: ${service || '-'}`,
-        `Preferred date: ${preferredDate || '-'}`,
-        '',
-        'Message:',
-        message || '-',
-      ].join('\n'),
-    );
+    const lines = [
+      `*New enquiry from ${name || 'Website visitor'}*`,
+      '',
+      `*Name:* ${name || '-'}`,
+      `*Email:* ${email || '-'}`,
+      `*Phone:* ${phone || '-'}`,
+      `*Service:* ${service || '-'}`,
+      `*Preferred date:* ${preferredDate || '-'}`,
+      '',
+      '*Message:*',
+      message || '-',
+    ].join('\n');
 
-    window.location.href = `mailto:info@akconsultant.uk?subject=${subject}&body=${body}`;
+    const text = encodeURIComponent(lines);
+    window.open(`https://wa.me/447459641859?text=${text}`, '_blank');
     setStatus('success');
     form.reset();
   }
@@ -276,12 +275,12 @@ export default function Contact() {
               >
                 {status === 'idle' && (
                   <>
-                    Send Enquiry <Send className="w-4 h-4 ml-1" />
+                    Send via WhatsApp <MessageCircle className="w-4 h-4 ml-1" />
                   </>
                 )}
                 {status === 'loading' && (
                   <>
-                    Sending… <Loader2 className="w-4 h-4 ml-1 animate-spin" />
+                    Opening… <Loader2 className="w-4 h-4 ml-1 animate-spin" />
                   </>
                 )}
               </GradientButton>

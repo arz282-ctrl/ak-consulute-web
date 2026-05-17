@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useTransition } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -13,9 +13,14 @@ import {
   MailCheck,
   CalendarClock,
   X,
+  Gift,
+  BadgeCheck,
+  Sparkles,
+  Loader2,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { WaitlistCard } from '@/components/ui/card-6';
+import { sendBookingEmail } from './actions';
 
 /* ---------- data ---------- */
 
@@ -69,6 +74,8 @@ type FormState = {
   priorAction: 'yes' | 'no' | '';
   documents: { id: string; file: File; label: string }[];
   consent: boolean;
+  promoCode: string;
+  promoApplied: boolean;
 };
 
 const INITIAL: FormState = {
@@ -85,6 +92,8 @@ const INITIAL: FormState = {
   priorAction: '',
   documents: [],
   consent: false,
+  promoCode: '',
+  promoApplied: false,
 };
 
 const STEPS = ['Service', 'Personal', 'Case', 'Documents', 'Review'] as const;
@@ -95,6 +104,8 @@ export default function BookingPage() {
   const [step, setStep] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState<FormState>(INITIAL);
+  const [isPending, startTransition] = useTransition();
+  const [submitError, setSubmitError] = useState('');
 
   const update = useCallback(<K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -104,7 +115,7 @@ export default function BookingPage() {
     if (step === 0) return form.service !== '';
     if (step === 1) return form.fullName.trim() && form.email.trim() && form.phone.trim() && form.contactMethod;
     if (step === 2) return form.caseSummary.trim().length >= 10 && form.urgency;
-    if (step === 3) return true; // documents optional
+    if (step === 3) return true;
     if (step === 4) return form.consent;
     return false;
   })();
@@ -113,33 +124,29 @@ export default function BookingPage() {
   const back = () => setStep((s) => Math.max(0, s - 1));
 
   const handleSubmit = () => {
-    const lines = [
-      '*NEW CONSULTATION REQUEST*',
-      '',
-      `*Service:* ${SERVICES.find((s) => s.id === form.service)?.label ?? '-'}`,
-      '',
-      `*Name:* ${form.fullName}`,
-      `*Email:* ${form.email}`,
-      `*Phone:* ${form.phone}`,
-      `*Language:* ${form.language}`,
-      `*Contact via:* ${CONTACT_METHODS.find((c) => c.id === form.contactMethod)?.label ?? '-'}`,
-      `*Preferred date:* ${form.preferredDate || '-'}`,
-      `*Preferred slot:* ${TIME_SLOTS.find((t) => t.id === form.preferredSlot)?.label ?? '-'}`,
-      '',
-      `*Urgency:* ${URGENCY.find((u) => u.id === form.urgency)?.label ?? '-'}`,
-      `*Prior legal action:* ${form.priorAction || '-'}`,
-      '',
-      '*Case summary:*',
-      form.caseSummary,
-      '',
-      `*Attachments mentioned (${form.documents.length}):*`,
-      ...form.documents.map((d, i) => `  ${i + 1}. ${d.label || 'Untitled'} — ${d.file.name} (${(d.file.size / 1024).toFixed(0)} KB)`),
-    ].join('\n');
-
-    const text = encodeURIComponent(lines);
-    // Open WhatsApp chat with Anwar's number (no + or spaces in wa.me URL)
-    window.location.href = `https://wa.me/447459641859?text=${text}`;
-    setSubmitted(true);
+    setSubmitError('');
+    startTransition(async () => {
+      const result = await sendBookingEmail({
+        service: SERVICES.find((s) => s.id === form.service)?.label ?? '-',
+        fullName: form.fullName,
+        email: form.email,
+        phone: form.phone,
+        language: form.language,
+        contactMethod: CONTACT_METHODS.find((c) => c.id === form.contactMethod)?.label ?? '-',
+        preferredDate: form.preferredDate,
+        preferredSlot: TIME_SLOTS.find((t) => t.id === form.preferredSlot)?.label ?? '-',
+        urgency: URGENCY.find((u) => u.id === form.urgency)?.label ?? '-',
+        priorAction: form.priorAction,
+        caseSummary: form.caseSummary,
+        documentCount: form.documents.length,
+        referral: form.promoApplied ? 'Protik' : '',
+      });
+      if (result.success) {
+        setSubmitted(true);
+      } else {
+        setSubmitError(result.error ?? 'Something went wrong. Please try again.');
+      }
+    });
   };
 
   if (submitted) {
@@ -257,13 +264,25 @@ export default function BookingPage() {
             ) : (
               <button
                 onClick={handleSubmit}
-                disabled={!canAdvance}
+                disabled={!canAdvance || isPending}
                 className="group inline-flex flex-1 items-center justify-center gap-2.5 rounded-full bg-primary px-6 py-3.5 text-sm font-bold text-white shadow-flame transition-all hover:brightness-105 disabled:bg-secondary/20 disabled:shadow-none disabled:text-secondary/40 disabled:cursor-not-allowed"
               >
-                Submit Request
-                <Check className="w-4 h-4" />
+                {isPending ? (
+                  <>
+                    Sending…
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  </>
+                ) : (
+                  <>
+                    Submit Request
+                    <Check className="w-4 h-4" />
+                  </>
+                )}
               </button>
             )}
+          {submitError && (
+            <p className="mt-2 text-center text-[12px] text-red-500 font-medium">{submitError}</p>
+          )}
           </div>
         </div>
       </div>
@@ -566,6 +585,61 @@ function StepDocuments({ form, update }: { form: FormState; update: <K extends k
             ))}
           </ul>
         )}
+
+        {/* Promo / consultation fee section */}
+        <div className="mt-6 rounded-2xl border-2 border-primary/20 bg-gradient-to-br from-primary/[0.04] to-primary/[0.08] p-5">
+          <div className="flex items-center gap-2.5 mb-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/15">
+              <Gift className="w-4.5 h-4.5 text-primary" />
+            </div>
+            <div>
+              <div className="font-display font-bold text-[14px] text-secondary">Referral code</div>
+              <div className="text-[11px] text-secondary/60">Use code <span className="font-bold text-primary">PROTIK80</span> for a complimentary consultation</div>
+            </div>
+          </div>
+
+          {form.promoApplied ? (
+            <div className="flex items-center gap-2 rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3">
+              <BadgeCheck className="w-5 h-5 text-emerald-600 shrink-0" />
+              <div>
+                <div className="text-[13px] font-bold text-emerald-700">Code applied — complimentary consultation</div>
+                <div className="text-[11px] text-emerald-600/80">Referred by Protik</div>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="flex gap-2">
+                <input
+                  value={form.promoCode}
+                  onChange={(e) => update('promoCode', e.target.value.toUpperCase())}
+                  placeholder="Enter referral code"
+                  className="flex-1 px-4 py-2.5 rounded-xl border-2 border-secondary/10 bg-white text-[13px] font-semibold text-secondary placeholder:text-secondary/35 focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition tracking-wider"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (form.promoCode.trim() === 'PROTIK80') {
+                      update('promoApplied', true);
+                    }
+                  }}
+                  disabled={!form.promoCode.trim()}
+                  className="px-5 py-2.5 rounded-xl bg-primary text-white text-[13px] font-bold transition hover:brightness-105 disabled:bg-secondary/20 disabled:text-secondary/40 disabled:cursor-not-allowed"
+                >
+                  Apply
+                </button>
+              </div>
+              {form.promoCode.trim() !== '' && form.promoCode.trim() !== 'PROTIK80' && (
+                <p className="mt-2 text-[12px] text-red-500 font-medium">Invalid code. Please check and try again.</p>
+              )}
+              <div className="mt-3 flex items-start gap-2 rounded-xl bg-amber-50 border border-amber-200/60 px-4 py-3">
+                <Sparkles className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                <div className="text-[12px] text-amber-700 leading-relaxed">
+                  <span className="font-bold">No referral code?</span> A standard consultation fee of <span className="font-bold">£100</span> applies. You can still submit your request.
+                </div>
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </>
   );
@@ -612,6 +686,18 @@ function StepReview({ form, update }: { form: FormState; update: <K extends keyo
             </div>
           </div>
         ))}
+        <div className="flex items-start gap-3 px-4 py-3">
+          <div className="text-[11px] uppercase tracking-[0.14em] font-semibold text-secondary/55 w-24 shrink-0 mt-0.5">
+            Fee
+          </div>
+          <div className="text-[13px] font-medium flex-1">
+            {form.promoApplied ? (
+              <span className="text-emerald-600 font-bold">Complimentary (Referred by Protik)</span>
+            ) : (
+              <span className="text-amber-600 font-bold">£100 — Standard consultation</span>
+            )}
+          </div>
+        </div>
         {form.caseSummary && (
           <div className="px-4 py-3">
             <div className="text-[11px] uppercase tracking-[0.14em] font-semibold text-secondary/55 mb-1.5">
