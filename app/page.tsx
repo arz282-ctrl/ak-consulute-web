@@ -9,8 +9,9 @@ import Footer from '@/components/Footer';
 
 export default function HomePage() {
   return (
-    <main className="relative min-h-screen overflow-hidden">
+    <>
       <Navigation />
+      <main className="relative min-h-screen" style={{ overflowX: 'clip' }}>
       <HeroSection
         id="top"
         slogan="Legal Consultant · In Practice Since 2004"
@@ -41,6 +42,7 @@ export default function HomePage() {
       <Testimonials />
       <Contact />
       <Footer />
-    </main>
+      </main>
+    </>
   );
 }
